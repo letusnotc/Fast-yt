@@ -1,7 +1,8 @@
 fastapi
 uvicorn
+pydantic
+pandas
 torch
 transformers
-pandas
-youtube-comment-downloader
 dateparser
+youtube-comment-downloader
