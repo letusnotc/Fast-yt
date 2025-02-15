@@ -6,6 +6,7 @@ import torch
 import pandas as pd
 import dateparser  # Import dateparser
 from datetime import datetime
+import os
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -17,6 +18,11 @@ model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 
 # Sentiment labels
 LABELS = ["Negative", "Neutral", "Positive"]
+
+# Root endpoint to check if API is running
+@app.get("/")
+def home():
+    return {"message": "YouTube Comment Sentiment API is running!"}
 
 # Function to analyze sentiment using RoBERTa
 def analyze_sentiment(text):
@@ -75,3 +81,9 @@ def analyze_youtube_comments(video: VideoURL):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Run FastAPI with Uvicorn
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))  # Use $PORT for Render, default to 8000 locally
+    uvicorn.run(app, host="0.0.0.0", port=port)
