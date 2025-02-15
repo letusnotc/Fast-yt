@@ -1,0 +1,18 @@
+"comment","sentiment","votes","hearted","replies","date_time"
+"I have a problem
+with Install flyctl
+pwsh : The name ""pwsh"" is not recognized as the name of a cmdlet, function, script file, or executable program. Check the spelling of the name and
+also the presence and correctness of the path, then try again.
+line:1 character:1
++ ~~~~
+    + CategoryInfo : ObjectNotFound: (pwsh:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException","Negative","0","False","0","2024-06-15 15:31:03"
+"Great Tutorial, Thank you","Positive","1","False","0","2024-02-15 15:31:03"
+"Great Tutorial, Thanks a lot.","Positive","1","True","0","2024-02-15 15:31:03"
+"Thank You a lot! It helped.","Positive","1","True","0","2024-02-15 15:31:03"
+"Thanks for that nice tutorial!","Positive","2","True","0","2023-02-15 15:31:03"
+"flyctl has this note below installation script for windows ""If you encounter an error saying the pwsh command is not found, powershell can be used instead, though we recommend installing the latest version of PowerShell."", and they point you to this https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4 link to install latest powershell on windows. Hope this resolves your issue","Neutral","0","False","0","2024-06-15 15:31:03"
+"You’re welcome!","Positive","0","False","0","2024-02-15 15:31:03"
+"You are welcome!","Positive","1","False","0","2024-02-15 15:31:03"
+"Awesome, nice to hear that it helped!","Positive","1","False","0","2024-02-15 15:31:04"
+"Glad it was helpful!","Positive","1","False","0","2023-02-15 15:31:04"

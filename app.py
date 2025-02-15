@@ -1,8 +1,7 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import logging
-import io
 import pandas as pd
 import torch
 import dateparser
@@ -57,20 +56,18 @@ async def analyze_youtube_comments(video: VideoURL):
         if not video.url.startswith("http"):
             raise HTTPException(status_code=400, detail="Invalid YouTube URL")
 
-        # Initialize downloader
+        # Initialize downloader and fetch comments
         downloader = YoutubeCommentDownloader()
         comments = list(downloader.get_comments_from_url(video.url, sort_by=SORT_BY_RECENT))
-
         if not comments:
             raise HTTPException(status_code=404, detail="No comments found.")
 
-        # Process comments
+        # Process comments and analyze sentiment
         data = []
         for comment in comments:
             text = comment.get("text", "")
             sentiment = analyze_sentiment(text)
             date_time = convert_to_datetime(comment.get("time", "Unknown"))
-
             data.append({
                 "comment": text,
                 "sentiment": sentiment,
@@ -80,18 +77,20 @@ async def analyze_youtube_comments(video: VideoURL):
                 "date_time": date_time
             })
 
-        # Convert DataFrame to CSV
+        # Convert processed data to a DataFrame and then save as CSV
         df = pd.DataFrame(data)
-        stream = io.StringIO()
-        df.to_csv(stream, index=False)
-        stream.seek(0)
+        csv_filename = "sentiment_analysis.csv"
+        # This will overwrite any previous CSV file with the same name.
+        df.to_csv(csv_filename, index=False, quoting=1)
 
-        logger.info("Sentiment analysis completed successfully!")
+        logger.info("Sentiment analysis completed and CSV file saved successfully!")
 
-        # Return CSV file
-        return StreamingResponse(stream, media_type="text/csv", headers={
-            "Content-Disposition": "attachment; filename=sentiment_analysis.csv"
-        })
+        # Return the CSV file as a downloadable response
+        return FileResponse(
+            csv_filename,
+            media_type="text/csv",
+            headers={"Content-Disposition": "attachment; filename=sentiment_analysis.csv"}
+        )
 
     except Exception as e:
         logger.error(f"Error: {str(e)}")
